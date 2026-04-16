@@ -9,12 +9,16 @@ It just gives a ```number``` of random cards from database
 - ```pip install uv```
 - ```uv sync```
 
+
+### Activate your venv
 If you're on Windows:
 ```.venv\Scripts\activate.ps1```
 
 If you're on Linux:
 ```.venv/Scripts/activate```
 
+- ```pre-commit install```
+- ```pre-commit run --all-files```
 
 ## Launching
 
