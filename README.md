@@ -17,9 +17,8 @@ If you're on Windows:
 If you're on Linux:
 ```.venv/Scripts/activate```
 
-- ```pre-commit install --hook-type pre-commit --hook-type pre-push```
+- ```pre-commit install --hook-type pre-commit```
 - ```pre-commit run --all-files```
-- ```pre-commit run --hook-stage push --all-files```
 
 ## Launching
 
