@@ -16,3 +16,14 @@ repos:
       - id: ruff
         args: [--fix]
       - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: run pytest pre-push
+        entry: python -m pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+        args: ["-q"]
+        stages: [push]
