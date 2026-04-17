@@ -15,3 +15,6 @@ wheels/
 
 # database files
 database_data/
+
+# log files
+logs/
