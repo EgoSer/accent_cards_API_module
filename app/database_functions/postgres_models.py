@@ -1,5 +1,6 @@
 import uuid
 
+from sqlalchemy import SmallInteger, String
 from sqlalchemy.dialects.postgresql import UUID as SA_UUID
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
@@ -16,4 +17,5 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 
 class Card(Base):
-    pass
+    word: Mapped[str] = mapped_column(String, unique=True)
+    accent: Mapped[int] = mapped_column(SmallInteger)
