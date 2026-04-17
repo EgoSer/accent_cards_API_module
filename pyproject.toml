@@ -5,6 +5,7 @@ description = "One of (and main) modules for EGE cards app"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.18.4",
     "asyncpg>=0.31.0",
     "dotenv>=0.9.9",
     "fastapi>=0.135.3",
