@@ -12,3 +12,6 @@ wheels/
 
 # sensitive information
 .env
+
+# database files
+database_data/
