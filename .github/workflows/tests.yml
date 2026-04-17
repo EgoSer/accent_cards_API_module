@@ -1,4 +1,7 @@
 name: Tests
+permissions:
+  checks: write
+
 on:
   push:
     branches: [ main, master ]
