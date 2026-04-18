@@ -1,6 +1,10 @@
-## One of (and main) module of **EGE CARDS** app
+## Backend part of **EGE CARDS** app
 
-It just gives a ```number``` of random cards from database
+API. Gives a ```number``` of random cards from database
+
+---
+
+The project has a modular structure. You can easily modify or add a new type of cards using ```base``` module and ```shared``` logic. More on that in ```Adding new functionality```
 
 
 ## Setting up (after pulling)
@@ -15,7 +19,7 @@ If you're on Windows:
 ```.venv\Scripts\activate.ps1```
 
 If you're on Linux:
-```.venv/Scripts/activate```
+```source .venv/Scripts/activate```
 
 - ```pre-commit install --hook-type pre-commit```
 - ```pre-commit run --all-files```
