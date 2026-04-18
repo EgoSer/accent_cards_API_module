@@ -27,7 +27,7 @@ dev = [
 [tool.ruff]
 target-version = "py314"
 line-length = 120
-extend-exclude = [ "migration" ]
+extend-exclude = [ "migration/*.py" ]
 
 [tool.ruff.lint]
 select = ["RUF", "E", "N", "F", "UP", "B", "SIM", "C4","I" ]
