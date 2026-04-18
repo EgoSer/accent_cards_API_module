@@ -17,7 +17,7 @@ def register_modules(app: FastAPI):
             if hasattr(module, "router"):
                 app.include_router(module.router)
             if hasattr(module, "meta"):
-                logger.info(f"Loaded module {module.module_name}")
+                logger.info(f'Loaded module "{module.module_name}" (version {module.version})')
         except Exception as e:
             logger.error(f"Couldn't import module {module_info.name}: {e}")
 
