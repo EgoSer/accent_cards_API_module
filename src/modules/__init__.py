@@ -14,7 +14,6 @@ def register_modules(app: FastAPI):
             continue
         try:
             module = importlib.import_module(f".{module_info.name}", package=__package__)
-            logger.info(module.__dir__())
             if hasattr(module, "router"):
                 app.include_router(module.router)
             if hasattr(module, "meta"):
