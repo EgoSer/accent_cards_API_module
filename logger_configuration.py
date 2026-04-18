@@ -6,7 +6,8 @@ from loguru import logger
 
 
 def database_log_filter(record):
-    return "postgres" in record["name"]
+    print("SQL" in record["name"] or "models" in record["name"])
+    return "SQL" in record["name"] or "models" in record["name"]
 
 
 # is called from main.py
