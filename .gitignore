@@ -11,7 +11,7 @@ wheels/
 .venv
 
 # sensitive information
-.env
+# .env                  # add for real projects!
 
 # database files
 database_data/
