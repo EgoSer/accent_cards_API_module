@@ -13,7 +13,7 @@ async_session_maker = async_sessionmaker(bind=engine, expire_on_commit=False)
 class Base(AsyncAttrs, DeclarativeBase):
     __abstract__ = True
 
-    id: Mapped[uuid.UUID] = mapped_column(SA_UUID(as_uuid=True), primary_key=True, default_factory=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(SA_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
     @declared_attr.directive
     def __tablename__(self):
