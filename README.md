@@ -28,3 +28,7 @@ If you're on Linux:
 
 ```python main.py``` will launch uvicorn dev server.
 For production please change main.py
+
+## Adding new functionality
+
+This block is still under construction
