@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 root_dir = Path(__file__).parent.parent
-print(root_dir)
 load_dotenv(root_dir / '.env')
 
 from sqlalchemy import pool
