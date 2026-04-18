@@ -1,5 +1,5 @@
 [project]
-name = "accent_cards_API_module"
+name = "ege-cards-API"
 version = "0.1.0"
 description = "One of (and main) modules for EGE cards app"
 readme = "README.md"
