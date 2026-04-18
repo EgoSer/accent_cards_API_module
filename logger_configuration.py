@@ -6,8 +6,27 @@ from loguru import logger
 
 
 def database_log_filter(record):
-    print("SQL" in record["name"] or "models" in record["name"])
-    return "SQL" in record["name"] or "models" in record["name"]
+    if not hasattr(record, "name"):
+        return False
+
+    name = record.name.lower()
+
+    db_keywords = {
+        "src.core.sql",
+        "src.core.database",
+        "alembic",
+        "sqlalchemy",
+        "asyncpg",
+    }
+
+    for keyword in db_keywords:
+        if name.startswith(keyword):
+            return True
+
+    if "model" in name and name.startswith("src."):
+        return True
+
+    return False
 
 
 # is called from main.py
