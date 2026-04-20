@@ -35,8 +35,6 @@ async def db_session() -> AsyncGenerator[AsyncSession]:
     session = test_async_session_maker(bind=connection)
 
     logger.info("[Setup] New session and transaction created")
-    a = True
-    print(a)
 
     try:
         yield session
