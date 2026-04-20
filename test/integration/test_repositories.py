@@ -42,7 +42,7 @@ async def test_crud_card(db_session):
 
     # Delete
     db_session.delete(new_card)
-    db_session.flush()
+    await db_session.flush()
 
     query = select(Card).where(Card.id == new_card.id)
     result = (await db_session.execute(query)).scalar_one_or_none()
