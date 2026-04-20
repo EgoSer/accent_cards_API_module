@@ -38,4 +38,3 @@ async def db_session() -> AsyncGenerator[AsyncSession]:
 async def db_class_session() -> AsyncGenerator[AsyncSession]:
     async with test_async_session_maker() as session:
         yield session
-        await session.rollback()

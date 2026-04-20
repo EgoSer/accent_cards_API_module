@@ -19,8 +19,11 @@ class TestAccentCardCRUD:
 
         assert new_card.id is not None
         TestAccentCardCRUD.card_id = new_card.id
-        logger.info(f"setup_card fixture: Created card: {new_card}")
+        logger.info(f"Setup: created card: {new_card}")
         yield
+
+        await db_class_session.rollback()
+        logger.info("Teardown: all changes reverted!")
 
     @pytest.mark.asyncio
     async def test_create_card(self, db_class_session):
@@ -32,7 +35,6 @@ class TestAccentCardCRUD:
 
         assert new_card.id is not None
         assert new_card.id != TestAccentCardCRUD.card_id
-        logger.info(f"CREATE test: Created card: {new_card}")
 
     @pytest.mark.asyncio
     async def test_read_card(self, db_class_session):
@@ -43,7 +45,6 @@ class TestAccentCardCRUD:
 
         assert card is not None
 
-        logger.info(f"READ test: Found card: {card}")
         assert card.id == TestAccentCardCRUD.card_id
         assert card.word == "торты"
         assert card.accent == 2
@@ -56,7 +57,6 @@ class TestAccentCardCRUD:
         card = (await db_class_session.execute(query)).scalar_one_or_none()
 
         assert card is not None
-        logger.info(f"UPDATE test: Found card: {card}")
 
         card.word = "туфля"
         card.accent = 1
@@ -70,7 +70,6 @@ class TestAccentCardCRUD:
         assert card is not None
         assert card.word == "туфля"
         assert card.accent == 1
-        logger.info(f"UPDATE test: Modified card: {card}")
 
     @pytest.mark.asyncio
     async def test_delete_card(self, db_class_session):
@@ -80,7 +79,6 @@ class TestAccentCardCRUD:
         card = (await db_class_session.execute(query)).scalar_one_or_none()
 
         assert card is not None
-        logger.info(f"DELETE test: Found card: {card}")
 
         db_class_session.delete(card)
         await db_class_session.flush()
@@ -89,4 +87,3 @@ class TestAccentCardCRUD:
         card = (await db_class_session.execute(query)).scalar_one_or_none()
 
         assert card is None
-        logger.info("DELETE test: Deleted card")
