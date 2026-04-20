@@ -18,20 +18,20 @@ if DATABASE_URL == "":
     raise ValueError("Database URL is not provided!")
 
 
-@pytest_asyncio.fixture(scope="session", loop_scope="session", autouse=True)
+@pytest_asyncio.fixture(scope="session", loop_scope="session")
 async def test_engine() -> AsyncGenerator[AsyncEngine]:
     engine = create_async_engine(DATABASE_URL)
     yield engine
     await engine.dispose()
 
 
-@pytest.fixture(scope="session", autouse=True)
-def test_async_session_maker(test_engine: AsyncEngine):
-    return async_sessionmaker(bind=test_engine, expire_on_commit=True)
+@pytest.fixture(scope="session")
+def test_async_session_maker(test_engine: AsyncEngine) -> async_sessionmaker[AsyncSession]:
+    return async_sessionmaker(bind=test_engine, expire_on_commit=True, class_=AsyncSession)
 
 
 @pytest_asyncio.fixture(scope="session", loop_scope="session")
-async def ensure_migrations(test_engine: AsyncEngine):
+async def ensure_migrations(test_engine: AsyncEngine) -> AsyncGenerator[None]:
     """Checks whether alembic migrations were made in test environment"""
     async with test_engine.connect() as conn:
         await conn.execute(text("SELECT 1"))
@@ -39,7 +39,9 @@ async def ensure_migrations(test_engine: AsyncEngine):
 
 
 @pytest_asyncio.fixture(scope="function", loop_scope="session")
-async def db_session(test_engine: AsyncEngine) -> AsyncGenerator[AsyncSession]:
+async def db_session(
+    test_engine: AsyncEngine, test_async_session_maker: async_sessionmaker[AsyncSession]
+) -> AsyncGenerator[AsyncSession]:
     connection = await test_engine.connect()
     transaction = await connection.begin()
     session = test_async_session_maker(bind=connection)
