@@ -55,3 +55,8 @@ In every module there's a ```meta.py``` file that contains information about mod
 
 ### 6. Define logic!
 Now you're free to define whatever logic!
+
+
+
+### P.S
+Please consider cover your logic with tests (This repo has github actions set up and uses pytest)
