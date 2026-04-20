@@ -30,8 +30,16 @@ async def ensure_migrations():
 
 @pytest_asyncio.fixture(scope="function", loop_scope="function")
 async def db_session() -> AsyncGenerator[AsyncSession]:
-    async with test_async_session_maker() as session:
-        logger.info("[Setup] New session created!")
+    connection = await test_engine.connect()
+    transaction = await connection.begin()
+    session = test_async_session_maker(bind=connection)
+
+    logger.info("[Setup] New session and transaction created")
+
+    try:
         yield session
-        await session.rollback()
-        logger.info("[Teardown] All changes reverted!")
+    finally:
+        await session.close()
+        await transaction.rollback()
+        await connection.close()
+        logger.info("[Teardown] All changes reverted")
