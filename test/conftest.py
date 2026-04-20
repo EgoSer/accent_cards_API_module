@@ -22,7 +22,7 @@ if DATABASE_URL == "":
 async def test_engine() -> AsyncGenerator[AsyncEngine]:
     engine = create_async_engine(DATABASE_URL)
     yield engine
-    await engine.dispose()  # обязательно чистим пул
+    await engine.dispose()
 
 
 @pytest.fixture(scope="session")
@@ -33,14 +33,14 @@ def test_async_session_maker(test_engine: AsyncEngine):
 @pytest_asyncio.fixture(scope="session", loop_scope="session")
 async def ensure_migrations():
     """Checks whether alembic migrations were made in test environment"""
-    async with test_engine.connect() as conn:
+    async with test_engine().connect() as conn:
         await conn.execute(text("SELECT 1"))
     yield
 
 
 @pytest_asyncio.fixture(scope="function", loop_scope="session")
 async def db_session() -> AsyncGenerator[AsyncSession]:
-    connection = await test_engine.connect()
+    connection = await test_engine().connect()
     transaction = await connection.begin()
     session = test_async_session_maker(bind=connection)
 
