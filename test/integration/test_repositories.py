@@ -1,9 +1,8 @@
 import pytest
+from loguru import logger
 from sqlalchemy import select
 
 from src.modules.accent_cards.models import Card
-
-card_id = None
 
 
 class TestAccentCardCRUD:
@@ -18,25 +17,32 @@ class TestAccentCardCRUD:
         await db_class_session.refresh(new_card)
 
         assert new_card.id is not None
-        global card_id
-        card_id = new_card.id
+        self.card_id = new_card.id
+        logger.info(f"CREATE test: Created card: {new_card}")
 
     @pytest.mark.asyncio
     async def test_read_card(self, db_class_session):
+        assert hasattr(self, "card_id")
+
         query = select(Card).where(Card.word == "торты")
         card = (await db_class_session.execute(query)).scalar_one_or_none()
 
-        global card_id
-
         assert card is not None
-        assert card.id == card_id
+
+        logger.info(f"READ test: Found card: {card}")
+        assert card.id == self.card_id
         assert card.word == "торты"
         assert card.accent == 2
 
     @pytest.mark.asyncio
     async def test_update_card(self, db_class_session):
+        assert hasattr(self, "card_id")
+
         query = select(Card).where(Card.word == "торты")
         card = (await db_class_session.execute(query)).scalar_one_or_none()
+
+        assert card is not None
+        logger.info(f"UPDATE test: Found card: {card}")
 
         card.word = "туфля"
         card.accent = 1
@@ -44,24 +50,29 @@ class TestAccentCardCRUD:
         await db_class_session.refresh(card)
 
         # Read again
-        global card_id
-        query = select(Card).where(Card.id == card_id)
+        query = select(Card).where(Card.id == self.card_id)
         card = (await db_class_session.execute(query)).scalar_one_or_none()
 
         assert card is not None
         assert card.word == "туфля"
         assert card.accent == 1
+        logger.info(f"UPDATE test: Modified card: {card}")
 
     @pytest.mark.asyncio
     async def test_delete_card(self, db_class_session):
-        global card_id
-        query = select(Card).where(Card.id == card_id)
+        assert hasattr(self, "card_id")
+
+        query = select(Card).where(Card.id == self.card_id)
         card = (await db_class_session.execute(query)).scalar_one_or_none()
+
+        assert card is not None
+        logger.info(f"DELETE test: Found card: {card}")
 
         db_class_session.delete(card)
         await db_class_session.flush()
 
-        query = select(Card).where(Card.id == card_id)
+        query = select(Card).where(Card.id == self.card_id)
         card = (await db_class_session.execute(query)).scalar_one_or_none()
 
         assert card is None
+        logger.info("DELETE test: Deleted card")
