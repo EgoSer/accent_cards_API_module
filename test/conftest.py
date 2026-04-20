@@ -27,8 +27,15 @@ async def ensure_migrations():
     yield
 
 
-@pytest_asyncio.fixture(scope="function")
+@pytest_asyncio.fixture(scope="function", loop_scope="function")
 async def db_session() -> AsyncGenerator[AsyncSession]:
+    async with test_async_session_maker() as session:
+        yield session
+        await session.rollback()
+
+
+@pytest_asyncio.fixture(scope="class", loop_scope="class")
+async def db_class_session() -> AsyncGenerator[AsyncSession]:
     async with test_async_session_maker() as session:
         yield session
         await session.rollback()
