@@ -1,10 +1,13 @@
 import os
 from collections.abc import AsyncGenerator
 
+import nest_asyncio
 import pytest_asyncio
 from loguru import logger
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+nest_asyncio.apply()
 
 
 def coalesce(value, default):

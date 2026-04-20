@@ -21,6 +21,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "nest-asyncio>=1.6.0",
     "pre-commit>=4.5.1",
     "ruff>=0.15.10",
 ]
