@@ -1,10 +1,11 @@
 import os
 from collections.abc import AsyncGenerator
 
+import pytest
 import pytest_asyncio
 from loguru import logger
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
 
 def coalesce(value, default):
@@ -16,21 +17,30 @@ DATABASE_URL = coalesce(os.getenv("POSTGRES_URL"), "")
 if DATABASE_URL == "":
     raise ValueError("Database URL is not provided!")
 
-test_engine = create_async_engine(DATABASE_URL)
-test_async_session_maker = async_sessionmaker(bind=test_engine, expire_on_commit=True)
+
+@pytest_asyncio.fixture(scope="session")
+async def test_engine() -> AsyncGenerator[AsyncEngine]:
+    engine = create_async_engine(DATABASE_URL)
+    yield engine
+    await engine.dispose()  # обязательно чистим пул
+
+
+@pytest.fixture(scope="session")
+def test_async_session_maker(test_engine):
+    return async_sessionmaker(bind=test_engine, expire_on_commit=True)
 
 
 @pytest_asyncio.fixture(scope="session")
 async def ensure_migrations():
     """Checks whether alembic migrations were made in test environment"""
-    async with test_engine.connect() as conn:
+    async with test_engine.connect() as conn:  # type: ignore
         await conn.execute(text("SELECT 1"))
     yield
 
 
 @pytest_asyncio.fixture(scope="function", loop_scope="function")
 async def db_session() -> AsyncGenerator[AsyncSession]:
-    connection = await test_engine.connect()
+    connection = await test_engine.connect()  # type: ignore
     transaction = await connection.begin()
     session = test_async_session_maker(bind=connection)
 
