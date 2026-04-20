@@ -50,7 +50,7 @@ jobs:
         run: uv run alembic upgrade head
         env:
           STAGE: "TEST"
-          DATABASE_URL: postgresql+asyncpg://test_ege_user:test_pass@localhost:5432/ege_cards_test
+          POSTGRES_URL: postgresql+asyncpg://test_ege_user:test_pass@localhost:5432/ege_cards_test
 
       - name: Run tests
         run: uv run pytest --verbose --color=yes --durations=10 --junitxml=junit.xml
