@@ -49,3 +49,9 @@ Navigate to file **migration/env.py**, find line that says **YOUR MODULES GO HER
 ### 4. Update Alembic
 - ```alembic revision --autogenerate -m "Your meaningful commit message"```
 - ```alembic upgrade head```
+
+### 5. Update meta.py
+In every module there's a ```meta.py``` file that contains information about module name, version and prefix. Make sure to update this information!
+
+### 6. Define logic!
+Now you're free to define whatever logic is in your head!
