@@ -2,6 +2,7 @@ import os
 from collections.abc import AsyncGenerator
 
 import pytest_asyncio
+from loguru import logger
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
@@ -30,11 +31,7 @@ async def ensure_migrations():
 @pytest_asyncio.fixture(scope="function", loop_scope="function")
 async def db_session() -> AsyncGenerator[AsyncSession]:
     async with test_async_session_maker() as session:
+        logger.info("[Setup] New session created!")
         yield session
         await session.rollback()
-
-
-@pytest_asyncio.fixture(scope="class", loop_scope="class")
-async def db_class_session() -> AsyncGenerator[AsyncSession]:
-    async with test_async_session_maker() as session:
-        yield session
+        logger.info("[Teardown] All changes reverted!")

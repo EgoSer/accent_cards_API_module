@@ -1,89 +1,92 @@
 import pytest
-import pytest_asyncio
-from loguru import logger
 from sqlalchemy import select
 
 from src.modules.accent_cards.models import Card
 
 
-class TestAccentCardCRUD:
-    """Test CRUD operations on Accent card model"""
+@pytest.mark.asyncio
+async def test_create_card(db_session):
+    new_card = Card(word="торты", accent=2)
 
-    @pytest_asyncio.fixture(scope="class", loop_scope="class", autouse=True)
-    async def setup_card(self, db_class_session):
-        new_card = Card(word="торты", accent=2)
+    db_session.add(new_card)
+    await db_session.flush()
+    await db_session.refresh(new_card)
 
-        db_class_session.add(new_card)
-        await db_class_session.flush()
-        await db_class_session.refresh(new_card)
+    assert new_card.id is not None
 
-        assert new_card.id is not None
-        TestAccentCardCRUD.card_id = new_card.id
-        logger.info(f"Setup: created card: {new_card}")
-        yield
 
-        await db_class_session.rollback()
-        logger.info("Teardown: all changes reverted!")
+@pytest.mark.asyncio
+async def test_read_card(db_session):
+    # Create card
+    new_card = Card(word="торты", accent=2)
 
-    @pytest.mark.asyncio
-    async def test_create_card(self, db_class_session):
-        new_card = Card(word="машины", accent=4)
+    db_session.add(new_card)
+    await db_session.flush()
+    await db_session.refresh(new_card)
 
-        db_class_session.add(new_card)
-        await db_class_session.flush()
-        await db_class_session.refresh(new_card)
+    assert new_card.id is not None
 
-        assert new_card.id is not None
-        assert new_card.id != TestAccentCardCRUD.card_id
+    # Read card
+    query = select(Card).where(Card.word == "торты")
+    card = (await db_session.execute(query)).scalar_one_or_none()
 
-    @pytest.mark.asyncio
-    async def test_read_card(self, db_class_session):
-        assert hasattr(self, "card_id")
+    assert card is not None
+    assert card.id == new_card.id
+    assert card.word == "торты"
+    assert card.accent == 2
 
-        query = select(Card).where(Card.word == "торты")
-        card = (await db_class_session.execute(query)).scalar_one_or_none()
 
-        assert card is not None
+@pytest.mark.asyncio
+async def test_update_card(db_session):
+    # Create card
+    new_card = Card(word="торты", accent=2)
 
-        assert card.id == TestAccentCardCRUD.card_id
-        assert card.word == "торты"
-        assert card.accent == 2
+    db_session.add(new_card)
+    await db_session.flush()
+    await db_session.refresh(new_card)
 
-    @pytest.mark.asyncio
-    async def test_update_card(self, db_class_session):
-        assert hasattr(self, "card_id")
+    assert new_card.id is not None
 
-        query = select(Card).where(Card.word == "торты")
-        card = (await db_class_session.execute(query)).scalar_one_or_none()
+    # Update card fields
+    query = select(Card).where(Card.word == "торты")
+    card = (await db_session.execute(query)).scalar_one_or_none()
 
-        assert card is not None
+    assert card is not None
 
-        card.word = "туфля"
-        card.accent = 1
-        await db_class_session.flush()
-        await db_class_session.refresh(card)
+    card.word = "туфля"
+    card.accent = 1
+    await db_session.flush()
+    await db_session.refresh(card)
 
-        # Read again
-        query = select(Card).where(Card.id == TestAccentCardCRUD.card_id)
-        card = (await db_class_session.execute(query)).scalar_one_or_none()
+    # Read again
+    query = select(Card).where(Card.id == new_card.id)
+    card = (await db_session.execute(query)).scalar_one_or_none()
 
-        assert card is not None
-        assert card.word == "туфля"
-        assert card.accent == 1
+    assert card is not None
+    assert card.word == "туфля"
+    assert card.accent == 1
 
-    @pytest.mark.asyncio
-    async def test_delete_card(self, db_class_session):
-        assert hasattr(self, "card_id")
 
-        query = select(Card).where(Card.id == TestAccentCardCRUD.card_id)
-        card = (await db_class_session.execute(query)).scalar_one_or_none()
+@pytest.mark.asyncio
+async def test_delete_card(db_session):
+    # Create card
+    new_card = Card(word="торты", accent=2)
 
-        assert card is not None
+    db_session.add(new_card)
+    await db_session.flush()
+    await db_session.refresh(new_card)
 
-        db_class_session.delete(card)
-        await db_class_session.flush()
+    assert new_card.id is not None
 
-        query = select(Card).where(Card.id == TestAccentCardCRUD.card_id)
-        card = (await db_class_session.execute(query)).scalar_one_or_none()
+    query = select(Card).where(Card.id == new_card.id)
+    card = (await db_session.execute(query)).scalar_one_or_none()
 
-        assert card is None
+    assert card is not None
+
+    db_session.delete(card)
+    await db_session.flush()
+
+    query = select(Card).where(Card.id == new_card.id)
+    card = (await db_session.execute(query)).scalar_one_or_none()
+
+    assert card is None
