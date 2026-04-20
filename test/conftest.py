@@ -31,7 +31,7 @@ def test_async_session_maker(test_engine: AsyncEngine):
 
 
 @pytest_asyncio.fixture(scope="session", loop_scope="session")
-async def ensure_migrations():
+async def ensure_migrations(test_engine: AsyncEngine):
     """Checks whether alembic migrations were made in test environment"""
     async with test_engine.connect() as conn:
         await conn.execute(text("SELECT 1"))
@@ -39,7 +39,7 @@ async def ensure_migrations():
 
 
 @pytest_asyncio.fixture(scope="function", loop_scope="session")
-async def db_session() -> AsyncGenerator[AsyncSession]:
+async def db_session(test_engine: AsyncEngine) -> AsyncGenerator[AsyncSession]:
     connection = await test_engine.connect()
     transaction = await connection.begin()
     session = test_async_session_maker(bind=connection)
