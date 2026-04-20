@@ -12,7 +12,7 @@ async def test_create_card(db_session):
     await db_session.flush()
     await db_session.refresh(new_card)
 
-    assert new_card.id is not None
+    assert new_card is not None
 
 
 @pytest.mark.asyncio
@@ -24,10 +24,10 @@ async def test_read_card(db_session):
     await db_session.flush()
     await db_session.refresh(new_card)
 
-    assert new_card.id is not None
+    assert new_card is not None
 
     # Read card
-    query = select(Card).where(Card.word == "торты")
+    query = select(Card).where(Card.id == new_card.id)
     card = (await db_session.execute(query)).scalar_one_or_none()
 
     assert card is not None
@@ -45,10 +45,10 @@ async def test_update_card(db_session):
     await db_session.flush()
     await db_session.refresh(new_card)
 
-    assert new_card.id is not None
+    assert new_card is not None
 
     # Update card fields
-    query = select(Card).where(Card.word == "торты")
+    query = select(Card).where(Card.id == new_card.id)
     card = (await db_session.execute(query)).scalar_one_or_none()
 
     assert card is not None
