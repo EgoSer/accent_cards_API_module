@@ -12,6 +12,9 @@ def coalesce(value, default):
 
 DATABASE_URL = coalesce(os.getenv("POSTGRES_URL"), "")
 
+if DATABASE_URL == "":
+    raise ValueError("Database URL is not provided!")
+
 test_engine = create_async_engine(DATABASE_URL)
 test_async_session_maker = async_sessionmaker(bind=test_engine, expire_on_commit=False)
 
