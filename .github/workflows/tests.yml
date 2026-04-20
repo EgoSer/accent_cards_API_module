@@ -23,11 +23,11 @@ jobs:
           - 5432:5432
         options: >-
           --health-cmd pg_isready
-          -- heatlh-start-period: 30s
-          -- heatlh-start-interval: 5s
-          -- heatlh-interval: 30s
-          -- heatlh-timeout: 5s
-          -- heatlh-retries: 8
+          -- heatlh-start-period 30s
+          -- heatlh-start-interval 5s
+          -- heatlh-interval 30s
+          -- heatlh-timeout 5s
+          -- heatlh-retries 8
 
     strategy:
       matrix:
