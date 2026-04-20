@@ -83,7 +83,7 @@ async def test_delete_card(db_session):
 
     assert card is not None
 
-    db_session.delete(card)
+    await db_session.delete(card)
     await db_session.flush()
 
     query = select(Card).where(Card.id == new_card.id)
