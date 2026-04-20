@@ -1,10 +1,20 @@
-import pytest
+import asyncio
+from functools import wraps
+
 from sqlalchemy import select
 
 from src.modules.accent_cards.models import Card
 
 
-@pytest.mark.asyncio
+def run_synchronous(async_function):
+    @wraps(async_function)
+    async def wrapper(*args, **kwargs):
+        await async_function(*args, **kwargs)
+
+    asyncio.get_event_loop().run_until_complete(wrapper())
+
+
+@run_synchronous
 async def test_create_card(db_session):
     new_card = Card(word="торты", accent=2)
 
@@ -15,7 +25,7 @@ async def test_create_card(db_session):
     assert new_card is not None
 
 
-@pytest.mark.asyncio
+@run_synchronous
 async def test_read_card(db_session):
     # Create card
     new_card = Card(word="торты", accent=2)
@@ -36,7 +46,7 @@ async def test_read_card(db_session):
     assert card.accent == 2
 
 
-@pytest.mark.asyncio
+@run_synchronous
 async def test_update_card(db_session):
     # Create card
     new_card = Card(word="торты", accent=2)
@@ -67,7 +77,7 @@ async def test_update_card(db_session):
     assert card.accent == 1
 
 
-@pytest.mark.asyncio
+@run_synchronous
 async def test_delete_card(db_session):
     # Create card
     new_card = Card(word="торты", accent=2)
