@@ -23,11 +23,11 @@ jobs:
           - 5432:5432
         options: >-
           --health-cmd pg_isready
-          -- health-start-period 30s
-          -- health-start-interval 5s
-          -- health-interval 30s
-          -- health-timeout 5s
-          -- health-retries 8
+          --health-start-period 30s
+          --health-start-interval 5s
+          --health-interval 30s
+          --health-timeout 5s
+          --health-retries 8
 
     strategy:
       matrix:
