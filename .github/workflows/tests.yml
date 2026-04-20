@@ -12,6 +12,23 @@ jobs:
   test:
     name: pytest (${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test_ege_user
+          POSTGRES_PASSWORD: test_pass
+          POSTGRES_DB: ege_cards_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          -- heatlh-start-period: 30s
+          -- heatlh-start-interval: 5s
+          -- heatlh-interval: 30s
+          -- heatlh-timeout: 5s
+          -- heatlh-retries: 8
+
     strategy:
       matrix:
         python-version: ['3.12']
@@ -28,6 +45,11 @@ jobs:
 
       - name: Setup project environment
         run: uv sync --locked --dev --all-extras
+
+      - name: Run migrations
+        run: uv run alembic upgrade head
+        env:
+          DATABASE_URL: postgresql+asyncpg://test_ege_user:test_pass@localhost:5432/ege_cards_test
 
       - name: Run tests
         run: uv run pytest --verbose --color=yes --durations=10 --junitxml=junit.xml

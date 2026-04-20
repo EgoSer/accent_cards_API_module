@@ -1,4 +1,4 @@
-import asyncio
+import asyncio, os
 from logging.config import fileConfig
 
 from dotenv import load_dotenv
@@ -26,10 +26,21 @@ from src.modules.accent_cards.models import *
 
 ################################################################################
 
+def coalesce(value, default):
+    return value if value else default
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_main_option("sqlalchemy.url", pg_settings.database_url)
+DATABASE_URL = ""
+if coalesce(os.getenv("STAGE"), "") == "TEST":
+    DATABASE_URL = coalesce(os.getenv("POSTGRES_URL"), "")
+else:
+    DATABASE_URL = pg_settings.database_url
+
+if DATABASE_URL == "":
+    raise ValueError("An error has occured whilst trying to load DATABASE_URL")
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
