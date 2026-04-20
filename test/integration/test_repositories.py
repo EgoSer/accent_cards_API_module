@@ -9,9 +9,9 @@ from src.modules.accent_cards.models import Card
 def run_synchronous(async_function):
     @wraps(async_function)
     async def wrapper(*args, **kwargs):
-        await async_function(*args, **kwargs)
+        asyncio.get_event_loop().run_until_complete(async_function(*args, **kwargs))
 
-    asyncio.get_event_loop().run_until_complete(wrapper())
+    return wrapper
 
 
 @run_synchronous
