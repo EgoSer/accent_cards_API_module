@@ -18,50 +18,25 @@ async def test_schema_to_orm_convertation(db_session):
 
 
 def test_schema_accent_too_high():
-    try:
+    with pytest.raises(ValueError) as exc_info:
         card = CardSchema(word="Привет", accent=15)
-    except Exception as e:
-        assert isinstance(e, ValueError)
-
-    # if error didn't happen
-    raise AssertionError("CardSchema failed to detect invalid input")
 
 
 def test_schema_accent_negative():
-    try:
+    with pytest.raises(ValueError) as exc_info:
         card = CardSchema(word="Привет", accent=-1)
-    except Exception as e:
-        assert isinstance(e, ValueError)
-
-    # if error didn't happen
-    raise AssertionError("CardSchema failed to detect invalid input")
 
 
 def test_schema_word_too_short():
-    try:
+    with pytest.raises(ValueError) as exc_info:
         card = CardSchema(word="", accent=-1)
-    except Exception as e:
-        assert isinstance(e, ValueError)
-
-    # if error didn't happen
-    raise AssertionError("CardSchema failed to detect invalid input")
 
 
 def test_schema_word_too_long():
-    try:
+    with pytest.raises(ValueError) as exc_info:
         card = CardSchema(word="выалопрдлыврапоыварпыврпрывапылврпыврлоплывап", accent=-1)
-    except Exception as e:
-        assert isinstance(e, ValueError)
-
-    # if error didn't happen
-    raise AssertionError("CardSchema failed to detect invalid input")
 
 
 def test_schema_word_incorrect_format():
-    try:
+    with pytest.raises(ValueError) as exc_info:
         card = CardSchema(word="Привет, мир!", accent=2)
-    except Exception as e:
-        assert isinstance(e, ValueError)
-
-    # if error didn't happen
-    raise AssertionError("CardSchema failed to detect invalid input")
