@@ -14,27 +14,7 @@ def testing_log_filter(record):
 def database_log_filter(record):
     if os.getenv("STAGE") == "TEST":
         return False
-    if not hasattr(record, "name"):
-        return False
-
-    name = record.name.lower()
-
-    db_keywords = {
-        "src.core.sql",
-        "src.core.database",
-        "alembic",
-        "sqlalchemy",
-        "asyncpg",
-    }
-
-    for keyword in db_keywords:
-        if name.startswith(keyword):
-            return True
-
-    if "model" in name and name.startswith("src."):
-        return True
-
-    return False
+    return "sql" in record["name"]
 
 
 # is called from main.py
