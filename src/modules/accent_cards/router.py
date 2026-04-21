@@ -1,17 +1,32 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query, status
+from fastapi.responses import JSONResponse
+from sqlalchemy import select
+from sqlalchemy.sql import func
+
+from src.core.sql.dependencies import get_async_session
 
 from .meta import module_name, module_tags, prefix, version
+from .models import Card
+from .schemas import CardResponse
 
 router = APIRouter(prefix=prefix, tags=module_tags)
 
 
 @router.get("/")
 def root():
-    return {"module": module_name, "version": version}
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"module": module_name, "version": version})
 
 
-@router.get("/get_cards")
-def get_cards(cards_number: Annotated[int, Query()]):
-    pass
+@router.get("/get_cards", response_model=dict[str, list[CardResponse]])
+async def get_cards(
+    amount: Annotated[
+        int,
+        Query(description="Returns less if amount of entries is less than desired amount"),
+    ],
+    session=Depends(get_async_session),
+):
+    query = select(Card).order_by(func.random()).limit(amount)
+    cards = (await session.execute(query)).scalars().all()
+    return {"cards": cards}
