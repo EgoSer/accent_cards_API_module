@@ -17,8 +17,11 @@ async def test_schema_to_orm_convertation(db_session):
     assert new_card.id is not None
 
 
-def test_orm_to_schema_response_convertation(db_session):
+@pytest.mark.asyncio
+async def test_orm_to_schema_response_convertation(db_session):
     card = Card(word="Привет", accent=4)
+    await db_session.flush()
+    await db_session.refresh(card)
     card_response = CardResponse.model_validate(card)
     assert card_response.word == "Привет"
     assert card_response.accent == 4
