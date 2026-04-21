@@ -1,7 +1,7 @@
 import pytest
 
 from src.modules.accent_cards.models import Card
-from src.modules.accent_cards.schemas import CardSchema
+from src.modules.accent_cards.schemas import CardResponse, CardSchema
 
 
 @pytest.mark.asyncio
@@ -15,6 +15,13 @@ async def test_schema_to_orm_convertation(db_session):
     await db_session.refresh(new_card)
 
     assert new_card.id is not None
+
+
+def test_orm_to_schema_response_convertation(db_session):
+    card = Card(word="Привет", accent=4)
+    card_response = CardResponse.model_validate(card)
+    assert card_response.word == "Привет"
+    assert card_response.accent == 4
 
 
 def test_schema_accent_too_high():
