@@ -6,6 +6,8 @@ on:
   push:
     paths:
       - src/**
+      - test/**
+      - migration/**
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
