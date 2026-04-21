@@ -17,6 +17,12 @@ def database_log_filter(record):
     return "sql" in record["name"]
 
 
+def redis_log_filter(record):
+    if os.getenv("STAGE") == "TEST":
+        return False
+    return "redis" in record["name"]
+
+
 # is called from main.py
 def set_logger():
     log_folder = Path(__file__).parent / "logs"
@@ -40,6 +46,15 @@ def set_logger():
     logger.add(
         log_folder / "database.log",
         filter=database_log_filter,
+        rotation="10 MB",
+        retention="7 days",
+        level=log_level,
+        enqueue=True,
+    )
+
+    logger.add(
+        log_folder / "redis.log",
+        filter=redis_log_filter,
         rotation="10 MB",
         retention="7 days",
         level=log_level,
