@@ -4,6 +4,8 @@ permissions:
 
 on:
   push:
+    paths:
+      - src/**
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
