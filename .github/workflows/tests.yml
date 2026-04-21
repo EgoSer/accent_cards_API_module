@@ -32,7 +32,6 @@ jobs:
           --health-interval 30s
           --health-timeout 5s
           --health-retries 8
-
     strategy:
       matrix:
         python-version: ['3.12']
@@ -55,6 +54,14 @@ jobs:
         env:
           STAGE: "TEST"
           POSTGRES_URL: postgresql+asyncpg://test_ege_user:test_pass@localhost:5432/ege_cards_test
+
+      - name: Setup redis
+        uses: getong/redis-action@v1
+        with:
+          redis version: '8.6.2-alpine'
+          host port: 6379
+          container port: 6379
+          redis password: '0000'
 
       - name: Run tests
         run: uv run pytest --verbose --color=yes --durations=10 --junitxml=junit.xml
