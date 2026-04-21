@@ -40,7 +40,7 @@ async def test_get_cards_endpoint_no_cards(test_async_session_maker):
         # print(f"{prefix}/get_cards?amount={amount}")
         # response = await ac.get(f"{prefix}/get_cards?amount={amount}")
 
-        # assert response.status_code == 200
+        assert response.status_code == 200
         # assert response.json() == json.dumps({"cards": []})
 
     app.dependency_overrides.clear()
