@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import func
 
 from src.core.sql.dependencies import get_async_session
@@ -25,7 +26,7 @@ async def get_cards(
         int,
         Query(description="Returns less if amount of entries is less than desired amount"),
     ],
-    session=Depends(get_async_session),
+    session: AsyncSession = Depends(get_async_session),
 ):
     query = select(Card).order_by(func.random()).limit(amount)
     cards = (await session.execute(query)).scalars().all()
