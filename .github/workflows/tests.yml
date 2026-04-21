@@ -68,6 +68,8 @@ jobs:
         env:
           STAGE: "TEST"
           POSTGRES_URL: postgresql+asyncpg://test_ege_user:test_pass@localhost:5432/ege_cards_test
+          REDIS_HOST: "localhost"
+          REDIS_PASSWORD: "0000"
 
       - name: Publish test results
         if: always()
