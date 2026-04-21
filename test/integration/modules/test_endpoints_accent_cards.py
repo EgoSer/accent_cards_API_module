@@ -55,6 +55,12 @@ def test_get_cards_endpoint_less_cards(accent_keywords, test_async_session_maker
     response = client.get(f"{prefix}/get_cards?amount={amount}")
     app.dependency_overrides.clear()
 
+    if response.status_code != 200:
+        try:
+            error_detail = response.json()
+            print("=== ERROR DETAIL ===", error_detail)
+        except Exception as e:
+            pass
     assert response.status_code == 200
 
     result = {word for word, _, _ in json.loads(response.json())["cards"].items()}
