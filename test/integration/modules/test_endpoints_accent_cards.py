@@ -22,13 +22,8 @@ async def test_get_cards_endpoint_no_cards(test_async_session_maker):
     app.dependency_overrides[get_async_session] = test_async_session_maker
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         amount = 10
-        url = f"{prefix}/get_cards?amount={amount}"
-
-        print("=== ЗАПРАШИВАЕМЫЙ URL ===", url)  # ← что мы отправили
-        response = await ac.get(url)
-
-        print("=== STATUS ===", response.status_code)
-        print("=== FULL BODY ===", response.text)  # ← самое важное!
+        print(f"{prefix}/get_cards?amount={amount}")
+        response = await ac.get(f"{prefix}/get_cards?amount={amount}")
 
         if response.status_code != 200:
             try:
@@ -36,12 +31,8 @@ async def test_get_cards_endpoint_no_cards(test_async_session_maker):
                 print("=== ERROR DETAIL ===", error_detail)
             except Exception as e:
                 pass
-        # amount = 10
-        # print(f"{prefix}/get_cards?amount={amount}")
-        # response = await ac.get(f"{prefix}/get_cards?amount={amount}")
-
         assert response.status_code == 200
-        # assert response.json() == json.dumps({"cards": []})
+        assert response.json() == json.dumps({"cards": []})
 
     app.dependency_overrides.clear()
 
