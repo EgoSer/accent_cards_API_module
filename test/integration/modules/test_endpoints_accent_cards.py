@@ -19,8 +19,12 @@ def accent_keywords():
     return [("торты", 1), ("туфля", 1), ("штаны", 4), ("машина", 3), ("ёжики", 0), ("двухядерный", 4)]
 
 
+# Короче дело в жопе. У нас есть db_session, которая вызывается, когда передается в аргументы.
+# И есть dependency_override, которая ее вызывает. И че делать, я хуй его ваще
+
+
 @pytest.mark.asyncio
-async def test_get_cards_endpoint_no_cards(db_session):
+async def test_get_cards_endpoint_no_cards():
     app.dependency_overrides[get_async_session] = db_session
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         amount = 10
