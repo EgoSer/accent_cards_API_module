@@ -31,7 +31,7 @@ async def test_create_cards(db_session, accent_keywords, test_async_session_make
     app.dependency_overrides[get_async_session] = test_async_session_maker
     cards = [Card(word=word, accent=accent) for word, accent in accent_keywords]
 
-    db_session.add(cards)
+    db_session.add_all(cards)
     await db_session.commit()
 
     assert cards is not None
