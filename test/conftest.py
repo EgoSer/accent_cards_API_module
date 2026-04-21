@@ -63,8 +63,8 @@ async def redis_session() -> AsyncGenerator[redis.Redis]:
         username=redis_settings.REDIS_USER,
         password=redis_settings.REDIS_PASSWORD,
         db=redis_settings.REDIS_DB,
-        encoding="ascii",
-        decode_responses=False,
+        encoding="utf-8",
+        decode_responses=True,
     )
 
     try:
