@@ -11,6 +11,8 @@ from src.server import app
 
 client = TestClient(app)
 
+# СУКА ПЕРЕДАВАТЬ В Depends НАДО ГЕНЕРАТОР AsyncGenerator[AsyncSession, None], А НЕ session_maker!!!!!!!!!!!!!
+
 
 @pytest.fixture(scope="module")
 def accent_keywords():
@@ -18,19 +20,13 @@ def accent_keywords():
 
 
 @pytest.mark.asyncio
-async def test_get_cards_endpoint_no_cards(test_async_session_maker):
-    app.dependency_overrides[get_async_session] = test_async_session_maker
+async def test_get_cards_endpoint_no_cards(db_session):
+    app.dependency_overrides[get_async_session] = db_session
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         amount = 10
         print(f"{prefix}/get_cards?amount={amount}")
         response = await ac.get(f"{prefix}/get_cards?amount={amount}")
 
-        if response.status_code != 200:
-            try:
-                error_detail = response.json()
-                print("=== ERROR DETAIL ===", error_detail)
-            except Exception as e:
-                pass
         assert response.status_code == 200
         assert response.json() == json.dumps({"cards": []})
 
@@ -38,30 +34,20 @@ async def test_get_cards_endpoint_no_cards(test_async_session_maker):
 
 
 @pytest.mark.asyncio
-async def test_create_cards(db_session, accent_keywords, test_async_session_maker):
-    app.dependency_overrides[get_async_session] = test_async_session_maker
+async def test_create_cards(db_session, accent_keywords):
     cards = [Card(word=word, accent=accent) for word, accent in accent_keywords]
 
     db_session.add_all(cards)
     await db_session.commit()
 
     assert cards is not None
-    app.dependency_overrides.clear()
 
 
-def test_get_cards_endpoint_less_cards(accent_keywords, test_async_session_maker):
-    app.dependency_overrides[get_async_session] = test_async_session_maker
+def test_get_cards_endpoint_less_cards(accent_keywords, db_session):
+    app.dependency_overrides[get_async_session] = db_session
     amount = 10
     response = client.get(f"{prefix}/get_cards?amount={amount}")
     app.dependency_overrides.clear()
-
-    if response.status_code != 200:
-        try:
-            error_detail = response.json()
-            print("=== ERROR DETAIL ===", error_detail)
-        except Exception as e:
-            pass
-    assert response.status_code == 200
 
     result = {word for word, _, _ in json.loads(response.json())["cards"].items()}
 
@@ -69,8 +55,8 @@ def test_get_cards_endpoint_less_cards(accent_keywords, test_async_session_maker
         assert word in result
 
 
-def test_get_cards_endpoint_more_cards(accent_keywords, test_async_session_maker):
-    app.dependency_overrides[get_async_session] = test_async_session_maker
+def test_get_cards_endpoint_more_cards(accent_keywords, db_session):
+    app.dependency_overrides[get_async_session] = db_session
     amount = 2
     response = client.get(f"{prefix}/get_cards?amount={amount}")
     app.dependency_overrides.clear()
