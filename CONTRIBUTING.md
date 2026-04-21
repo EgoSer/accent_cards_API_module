@@ -23,7 +23,7 @@ uv sync
 ```
 
 
-### Activate your venv
+### Activate virtual enviroment
 If you're on Windows:
 ```.venv\Scripts\activate.ps1```
 
