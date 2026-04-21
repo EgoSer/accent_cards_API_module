@@ -15,11 +15,14 @@ class CardSchema(BaseModel):
     ]
 
     @field_validator("word", mode="before")
-    def word_field_validator(cls, value) -> bool:
-        if set(value).issubset(allowed_characters):
-            return True
-        else:
+    def word_field_validator(cls, value) -> str:
+        if not isinstance(value, str):
+            raise ValueError("Word must be a string")
+
+        if not set(value).issubset(allowed_characters):
             raise ValueError("Word contains unallowed characters!")
+
+        return value.lower().strip()
 
     @model_validator(mode="after")
     def word_validator(self) -> Self:
