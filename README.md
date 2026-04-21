@@ -1,4 +1,15 @@
-## Backend part of **EGE CARDS** app
+
+## **EGE CARDS** app backend
+
+[![Tests](https://github.com/EgoSer/ege-cards-API/actions/workflows/tests.yml/badge.svg)](https://github.com/EgoSer/ege-cards-API/actions/workflows/tests.yml)
+[![image](https://img.shields.io/pypi/l/ruff.svg)](https://github.com/EgoSer/ege-cards-API/blob/main/LICENSE)
+(Here badge with package version)
+
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
+
+---
 
 API. Gives a ```number``` of random cards from database
 
@@ -7,9 +18,12 @@ API. Gives a ```number``` of random cards from database
 The project has a modular structure. You can easily modify or add a new type of cards using ```base``` module and ```shared``` logic. More on that in ```Adding new functionality```
 
 
-## Setting up (after pulling)
+## Setting up dev environment
 
-- ```cd ./accent_cards_API_module```
+### Download project and all dependencies
+
+- ```git clone https://github.com/EgoSer/ege-cards-API```
+- ```cd ege-cards-API```
 - ```pip install uv```
 - ```uv sync```
 
@@ -21,10 +35,12 @@ If you're on Windows:
 If you're on Linux:
 ```source .venv/Scripts/activate```
 
+### Setup ruff
+
 - ```pre-commit install --hook-type pre-commit```
 - ```pre-commit run --all-files```
 
-### Launch docker compose
+### Launch all required services
 - ```docker compose up -d --wait```
 
 ### Setup database
