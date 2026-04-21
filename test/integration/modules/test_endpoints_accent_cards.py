@@ -8,6 +8,7 @@ from src.core.sql.dependencies import get_async_session
 from src.modules.accent_cards.meta import prefix
 from src.modules.accent_cards.models import Card
 from src.server import app
+from test.conftest import db_session
 
 client = TestClient(app)
 
