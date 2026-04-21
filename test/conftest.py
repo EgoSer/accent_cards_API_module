@@ -3,9 +3,12 @@ from collections.abc import AsyncGenerator
 
 import pytest
 import pytest_asyncio
+import redis.asyncio as redis
 from loguru import logger
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
+
+from src.core.redis.config import redis_settings
 
 
 def coalesce(value, default):
@@ -55,3 +58,33 @@ async def db_session(
         await transaction.rollback()
         await connection.close()
         logger.info("[Teardown] All changes reverted")
+
+
+@pytest_asyncio.fixture(scope="function", loop_scope="session")
+async def redis_session() -> AsyncGenerator[redis.Redis]:
+    redis_client = redis.Redis(
+        host=redis_settings.REDIS_HOST,
+        port=redis_settings.REDIS_PORT,
+        username=redis_settings.REDIS_USER,
+        password=redis_settings.REDIS_PASSWORD,
+        db=redis_settings.REDIS_DB,
+        encoding="ascii",
+        decode_responses=False,
+    )
+
+    try:
+        await redis_client.ping()  # type: ignore
+    except redis.ConnectionError as e:
+        logger.error(f"Couldn't connect to redis. URL: {redis_settings.get_url}")
+        raise e
+
+    logger.info("New redis session created")
+
+    try:
+        yield redis_client
+    except Exception as e:
+        logger.error(f"An unexpected exception occured during redis session: {e}")
+        raise e
+    finally:
+        await redis_client.aclose()
+        logger.info("Redis session closed")
