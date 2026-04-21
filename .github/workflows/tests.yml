@@ -5,9 +5,9 @@ permissions:
 on:
   push:
     paths:
-      - src/**
-      - test/**
-      - migration/**
+      - 'src/**'
+      - 'test/**'
+      - 'migration/**'
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
