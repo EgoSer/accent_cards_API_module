@@ -67,7 +67,12 @@ jobs:
         run: uv run pytest --verbose --color=yes --durations=10 --junitxml=junit.xml
         env:
           STAGE: "TEST"
-          POSTGRES_URL: postgresql+asyncpg://test_ege_user:test_pass@localhost:5432/ege_cards_test
+          POSTGRES_USER: "test_ege_user"
+          POSTGRES_PASSWORD: "test_pass"
+          POSTGRES_HOST: "localhost"
+          POSTGRES_PORT: "5432"
+          POSTGRES_DB: "ege_cards_test"
+          PGBOUNCER_PORT: "5430"
           REDIS_HOST: "localhost"
           REDIS_PASSWORD: "0000"
 

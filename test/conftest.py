@@ -1,4 +1,3 @@
-import os
 from collections.abc import AsyncGenerator
 
 import pytest
@@ -9,13 +8,9 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
 from src.core.redis.config import redis_settings
+from src.core.sql.config import pg_settings
 
-
-def coalesce(value, default):
-    return value if value else default
-
-
-DATABASE_URL = coalesce(os.getenv("POSTGRES_URL"), "")
+DATABASE_URL = pg_settings.database_url
 
 if DATABASE_URL == "":
     raise ValueError("Database URL is not provided!")
