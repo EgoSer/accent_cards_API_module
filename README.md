@@ -11,7 +11,7 @@
 
 ---
 
-API. Gives a ```number``` of random cards from database
+RESTful API. Gives a requested number of random cards from database
 
 ---
 
