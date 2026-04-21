@@ -1,9 +1,9 @@
 
 ## **EGE CARDS** app backend
-
 [![Tests](https://github.com/EgoSer/ege-cards-API/actions/workflows/tests.yml/badge.svg)](https://github.com/EgoSer/ege-cards-API/actions/workflows/tests.yml)
-[![image](https://img.shields.io/pypi/l/ruff.svg)](https://github.com/EgoSer/ege-cards-API/blob/main/LICENSE)
-(Here badge with package version)
+
+[![image](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/version_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/main)
+[![image](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/license_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/blob/main/LICENSE)
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
