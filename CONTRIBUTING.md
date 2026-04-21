@@ -7,7 +7,7 @@
 
 This project has a modular structure.
 
-You can modify or add a new type of cards using ```base``` module and ```shared``` logic. More on that in [Adding new functionality](https://github.com/EgoSer/ege-cards-API/blob/main/CONTRIBUTING.md#adding-new-functionality).
+You can modify or add a new type of cards using ```base``` module and ```shared``` logic. More on that in [Adding new functionality](#adding-new-functionality).
 
 This project uses Github Actions workflow to run tests from ```test``` folder
 
