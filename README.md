@@ -15,6 +15,10 @@ API. Gives a ```number``` of random cards from database
 
 ---
 
+## How to fork / contribute
+
+[Read more on how to extend / modify functionality here](https://github.com/EgoSer/ege-cards-API/blob/main/CONTRIBUTING.md)
+
 # TODO: "How to build" docs
 
 # TODO: "How to use" docs (с картинками)

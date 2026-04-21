@@ -53,10 +53,19 @@ pre-commit run --all-files
 The first step to creating a new module is to build upon the old one! Seriously, modules have A LOT of metadata used by app, so consider copying existing module!
 
 ### 2. Define your ORM models
-The reason behind this is **ALEMBIC**, so define your models, inheriting from Base, imported from ```src.core.sql``` module
+The reason behind this is **ALEMBIC**, so define your models, inheriting from ```Base``` class, (import from ```src.core.sql``` module)
 
 ### 3. Register your ORM
-Navigate to file **migration/env.py**, find line that says **YOUR MODULES GO HERE** and add line importing all models from your ```YOUR_MODULE/models.py``` file (e.g ```from src.modules.YOUR_MODULE.models import *```)
+Navigate to **migration/env.py** file, find line that says **YOUR MODULES GO HERE** and add line importing all models from your ```YOUR_MODULE/models.py``` file
+```python
+############################# YOUR MODULES GO HERE #############################
+
+
+from src.modules.YOUR_MODULE.models import *
+
+
+################################################################################
+```
 
 ### 4. Update Alembic
 - ```alembic revision --autogenerate -m "Your meaningful commit message"```
@@ -64,6 +73,12 @@ Navigate to file **migration/env.py**, find line that says **YOUR MODULES GO HER
 
 ### 5. Update meta.py
 In every module there's a ```meta.py``` file that contains information about module name, version and prefix. Make sure to update this information!
+```python
+module_name = "Accent cards" # The name of your module
+version = "0.1a" # Actual version of your module
+prefix = "/cards/accent" # prefix is used by fastapi Router class to define how to access your module
+module_tags = ["accent"]
+```
 
 ### 6. Define logic!
 Now you're free to define whatever logic!
