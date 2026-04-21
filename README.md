@@ -2,7 +2,7 @@
 ## **EGE CARDS** app backend
 [![Tests](https://github.com/EgoSer/ege-cards-API/actions/workflows/tests.yml/badge.svg)](https://github.com/EgoSer/ege-cards-API/actions/workflows/tests.yml)
 
-[![Version](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/version_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/main)
+[![Version](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/version_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/blob/main)
 [![License](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/license_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/blob/main/LICENSE)
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)

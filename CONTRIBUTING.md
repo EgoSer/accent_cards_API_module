@@ -1,9 +1,9 @@
 ## Contributing / forking project
 
-[![Python](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/python_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/main)
+[![Python](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/python_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/blob/main)
 
-[![Linter](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/linter_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/main)
-[![Stack](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/stack_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/main)
+[![Linter](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/linter_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/blob/main)
+[![Stack](https://raw.githubusercontent.com/EgoSer/ege-cards-API/refs/heads/main/img/stack_badge.svg?sanitize=True)](https://github.com/EgoSer/ege-cards-API/blob/main)
 
 This project has a modular structure.
 
