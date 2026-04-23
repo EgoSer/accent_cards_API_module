@@ -29,22 +29,17 @@ async def async_client(db_session) -> AsyncGenerator[AsyncClient]:
 
 @pytest.fixture(scope="module")
 def accent_keywords():
-    return [("торты", 1), ("туфля", 1), ("штаны", 4), ("машина", 3), ("ёжики", 0), ("двухядерный", 4)]
-
-
-# Короче дело в жопе. У нас есть db_session, которая вызывается, когда передается в аргументы.
-# И есть dependency_override, которая ее вызывает. И че делать, я хуй его ваще
+    return [("торты", 1), ("туфля", 1), ("штаны", 4), ("машина", 3), ("ёжики", 0), ("двухъядерный", 5)]
 
 
 @pytest.mark.asyncio
 async def test_get_cards_endpoint_no_cards(async_client):
-    async with async_client as ac:
-        amount = 10
-        print(f"{prefix}/get_cards?amount={amount}")
-        response = await ac.get(f"{prefix}/get_cards?amount={amount}")
+    amount = 10
+    print(f"{prefix}/get_cards?amount={amount}")
+    response = await async_client.get(f"{prefix}/get_cards?amount={amount}")
 
-        assert response.status_code == 200
-        assert response.json() == json.dumps({"cards": []})
+    assert response.status_code == 200
+    assert response.json() == json.dumps({"cards": []})
 
 
 @pytest.mark.asyncio
