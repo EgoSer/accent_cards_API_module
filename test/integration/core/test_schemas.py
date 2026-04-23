@@ -25,7 +25,7 @@ async def test_orm_to_schema_response_convertation(db_session):
     await db_session.refresh(card)
 
     card_response = CardResponse.model_validate(card)
-    assert card_response.word == "Привет"
+    assert card_response.word == "привет"
     assert card_response.accent == 4
 
 
