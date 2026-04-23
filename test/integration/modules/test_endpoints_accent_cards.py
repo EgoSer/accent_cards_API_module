@@ -39,7 +39,7 @@ async def test_get_cards_endpoint_no_cards(async_client):
     response = await async_client.get(f"{prefix}/get_cards?amount={amount}")
 
     assert response.status_code == 200
-    assert response.json() == json.dumps({"cards": []})
+    assert json.loads(response.json()) == {"cards": []}
 
 
 @pytest.mark.asyncio
@@ -52,11 +52,9 @@ async def test_create_cards(db_session, accent_keywords):
     assert cards is not None
 
 
-def test_get_cards_endpoint_less_cards(accent_keywords, db_session):
-    app.dependency_overrides[get_async_session] = db_session
+def test_get_cards_endpoint_less_cards(accent_keywords, async_client):
     amount = 10
-    response = client.get(f"{prefix}/get_cards?amount={amount}")
-    app.dependency_overrides.clear()
+    response = async_client.get(f"{prefix}/get_cards?amount={amount}")
 
     result = {word for word, _, _ in json.loads(response.json())["cards"].items()}
 
@@ -64,11 +62,9 @@ def test_get_cards_endpoint_less_cards(accent_keywords, db_session):
         assert word in result
 
 
-def test_get_cards_endpoint_more_cards(accent_keywords, db_session):
-    app.dependency_overrides[get_async_session] = db_session
+def test_get_cards_endpoint_more_cards(accent_keywords, async_client):
     amount = 2
-    response = client.get(f"{prefix}/get_cards?amount={amount}")
-    app.dependency_overrides.clear()
+    response = async_client.get(f"{prefix}/get_cards?amount={amount}")
 
     assert response.status_code == 200
 
