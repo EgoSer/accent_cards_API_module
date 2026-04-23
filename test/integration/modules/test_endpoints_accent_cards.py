@@ -1,4 +1,3 @@
-import json
 from collections.abc import AsyncGenerator
 
 import pytest
@@ -42,9 +41,9 @@ async def test_get_cards_endpoint_no_cards(async_client):
     assert response.json() == {"cards": []}
 
 
-# fix assert to read again
 @pytest.mark.asyncio
 async def test_create_cards(db_session, accent_keywords):
+    # exists purely for next tests
     cards = [Card(word=word, accent=accent) for word, accent in accent_keywords]
 
     db_session.add_all(cards)
@@ -58,7 +57,7 @@ async def test_get_cards_endpoint_less_cards(accent_keywords, async_client):
     amount = 10
     response = await async_client.get(f"{prefix}/get_cards?amount={amount}")
 
-    result = {word for word, _, _ in json.loads(response.json())["cards"].items()}
+    result = {word for word, _, _ in response.json()["cards"].items()}
 
     for word, _ in accent_keywords:
         assert word in result
@@ -71,7 +70,7 @@ async def test_get_cards_endpoint_more_cards(accent_keywords, async_client):
 
     assert response.status_code == 200
 
-    result = {word: accent for word, accent, _ in json.loads(response.json())["cards"].items()}
+    result = {word: accent for word, accent, _ in response.json()["cards"].items()}
 
     for word, accent in result.items():
         assert (word, accent) in accent_keywords
