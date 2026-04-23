@@ -58,7 +58,7 @@ async def test_get_cards_endpoint_less_cards(accent_keywords, async_client):
     response = await async_client.get(f"{prefix}/get_cards?amount={amount}")
 
     print(response.json())
-    result = {word for word, _, _ in response.json()["cards"]}
+    result = {word["word"] for word in response.json()["cards"]}
 
     for word, _ in accent_keywords:
         assert word in result
@@ -71,7 +71,7 @@ async def test_get_cards_endpoint_more_cards(accent_keywords, async_client):
 
     assert response.status_code == 200
 
-    result = {word: accent for word, accent, _ in response.json()["cards"]}
+    result = {(word["word"], word["accent"]) for word in response.json()["cards"]}
 
-    for word, accent in result.items():
-        assert (word, accent) in accent_keywords
+    for word_tuple in result:
+        assert word_tuple in accent_keywords
