@@ -56,11 +56,6 @@ async def db_session(
 
 
 @pytest_asyncio.fixture(scope="function", loop_scope="session")
-async def get_db_session_generator():
-    yield db_session
-
-
-@pytest_asyncio.fixture(scope="function", loop_scope="session")
 async def redis_session() -> AsyncGenerator[redis.Redis]:
     redis_client = redis.Redis(
         host=redis_settings.REDIS_HOST,
