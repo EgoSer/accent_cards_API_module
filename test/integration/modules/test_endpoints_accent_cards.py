@@ -1,6 +1,8 @@
 import json
+from collections.abc import AsyncGenerator
 
 import pytest
+import pytest_asyncio
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 
@@ -14,6 +16,17 @@ client = TestClient(app)
 # СУКА ПЕРЕДАВАТЬ В Depends НАДО ГЕНЕРАТОР AsyncGenerator[AsyncSession, None], А НЕ session_maker!!!!!!!!!!!!!
 
 
+@pytest_asyncio.fixture(scope="function", loop_scope="function")
+async def async_client(db_session) -> AsyncGenerator[AsyncClient]:
+    def override_db_session():
+        yield db_session
+
+    app.dependency_overrides[get_async_session] = override_db_session
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        yield ac
+    app.dependency_overrides.clear()
+
+
 @pytest.fixture(scope="module")
 def accent_keywords():
     return [("торты", 1), ("туфля", 1), ("штаны", 4), ("машина", 3), ("ёжики", 0), ("двухядерный", 4)]
@@ -24,17 +37,14 @@ def accent_keywords():
 
 
 @pytest.mark.asyncio
-async def test_get_cards_endpoint_no_cards(get_db_session_generator):
-    app.dependency_overrides[get_async_session] = get_db_session_generator
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+async def test_get_cards_endpoint_no_cards(async_client):
+    async with async_client as ac:
         amount = 10
         print(f"{prefix}/get_cards?amount={amount}")
         response = await ac.get(f"{prefix}/get_cards?amount={amount}")
 
         assert response.status_code == 200
         assert response.json() == json.dumps({"cards": []})
-
-    app.dependency_overrides.clear()
 
 
 @pytest.mark.asyncio
