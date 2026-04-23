@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 
 from src.core.sql.dependencies import get_async_session
 
-from .meta import module_name, module_tags, prefix, version
+from .meta import description, module_name, module_tags, prefix, version
 from .models import Card
 from .schemas import CardResponse
 
@@ -17,7 +17,9 @@ router = APIRouter(prefix=prefix, tags=module_tags)
 
 @router.get("/")
 def root():
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"module": module_name, "version": version})
+    return JSONResponse(
+        status_code=status.HTTP_200_OK, content={"module": module_name, "description": description, "version": version}
+    )
 
 
 @router.get("/get_cards", response_model=dict[str, list[CardResponse]])
