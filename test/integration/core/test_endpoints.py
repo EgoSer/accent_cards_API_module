@@ -17,4 +17,8 @@ def test_module_endpoint():
     response = client.get(accent_cards.prefix)
 
     assert response.status_code == 200
-    assert response.json() == {"module": accent_cards.module_name, "version": accent_cards.version}
+    assert response.json() == {
+        "module": accent_cards.module_name,
+        "description": accent_cards.description,
+        "version": accent_cards.version,
+    }
