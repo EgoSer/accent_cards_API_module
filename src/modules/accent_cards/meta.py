@@ -10,4 +10,4 @@ description = (
     "Returns requested amount of accent cards (or less if database have not enough)"  # description of your module
 )
 prefix = "/cards/accent"  # prefix is used by fastapi Router class to define how to access your module
-module_tags = ["accent"]
+module_tags = [module_name]  # Swagger (openAPI) section for this module

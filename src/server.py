@@ -7,10 +7,10 @@ from src.modules import register_modules
 load_dotenv(override=True)
 set_logger()
 
-app = FastAPI(title="EGE Cards API", version="0.1a")
+app = FastAPI(title="EGE Cards API", version="0.2.0-alpha")
 register_modules(app)
 
 
-@app.get("/")
+@app.get("/", tags=["Server status"])
 def root():
     return {"server": "running"}
