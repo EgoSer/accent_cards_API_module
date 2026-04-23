@@ -31,11 +31,12 @@ response:
 
 ---
 
-```/get_cards``` - working endpoint. Gives ```number``` of cards or less if requested amount is greater than number of cards in the database
+```/get_cards``` - working endpoint. Gives ```number``` of cards or less if requested amount is greater than number of cards in the database.
+The cards are always randomly sorted.
 
 #### E.G
 
-request: ```http://your.domain.backend.org/cards/accent/get_cards?amount=3```
+request 1: ```http://your.domain.backend.org/cards/accent/get_cards?amount=3```
 
 response:
 
@@ -51,6 +52,32 @@ response:
             "word": "торты",
             "accent": 1,
             "id": "96e8a9a1-4fb7-4178-b346-210196dfe0f4"
+        },
+        {
+            "word": "привет",
+            "accent": 4,
+            "id": "ef97e914-5568-41d7-a2db-1d320e47c8db"
+        }
+    ]
+}
+```
+
+request 2: ```http://your.domain.backend.org/cards/accent/get_cards?amount=3```
+
+response:
+
+```json
+{
+    "cards": [
+        {
+            "word": "торты",
+            "accent": 1,
+            "id": "96e8a9a1-4fb7-4178-b346-210196dfe0f4"
+        },
+        {
+            "word": "туфля",
+            "accent": 1,
+            "id": "15515d0b-6177-4e05-92a8-32c987656094"
         },
         {
             "word": "привет",
