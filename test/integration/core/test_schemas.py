@@ -1,4 +1,5 @@
 import pytest
+from sqlalchemy import select
 
 from src.modules.accent_cards.models import Card
 from src.modules.accent_cards.schemas import CardResponse, CardSchema
@@ -22,7 +23,12 @@ async def test_orm_to_schema_response_convertation(db_session):
     card = Card(word="Привет", accent=4)
     await db_session.flush()
     await db_session.refresh(card)
-    card_response = CardResponse.model_validate(card)
+
+    # to remove "not persistent" error
+    read_card = (await db_session.execute(select(Card).where(Card.id == card.id))).scalar_one_or_none()
+    assert read_card is not None
+
+    card_response = CardResponse.model_validate(read_card)
     assert card_response.word == "Привет"
     assert card_response.accent == 4
 
