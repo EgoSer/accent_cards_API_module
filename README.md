@@ -15,10 +15,32 @@ RESTful API. Gives a requested number of random cards from database
 
 ---
 
+## How to build this app (update when branch "release" is present: links for cloning and docker-compose.yml):
+
+### 1. Clone repo and locate into the folder
+```shell
+git clone https://github.com/EgoSer/ege-cards-API.git
+cd ./ege-cards-API
+```
+
+### 2. [Install docker](https://docs.docker.com/engine/install/)
+
+### 3. Build docker image
+```shell
+docker build . -t ege-cards-api:latest
+```
+
+### 4. Run built image and all required services
+```shell
+docker compose up -d --wait
+```
+
+## How to use:
+
+Check out usage guides / manuals written for each module individually!
+
+- [Accent cards module](https://github.com/EgoSer/ege-cards-API/blob/main/src/modules/accent_cards/README.md)
+
 ## How to fork / contribute
 
 [Read more on how to extend / modify functionality here](https://github.com/EgoSer/ege-cards-API/blob/main/CONTRIBUTING.md)
-
-# TODO: "How to build" docs
-
-# TODO: "How to use" docs (с картинками)
