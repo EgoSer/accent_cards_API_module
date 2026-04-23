@@ -57,6 +57,7 @@ async def test_get_cards_endpoint_less_cards(accent_keywords, async_client):
     amount = 10
     response = await async_client.get(f"{prefix}/get_cards?amount={amount}")
 
+    print(response.json())
     result = {word for word, _, _ in response.json()["cards"]}
 
     for word, _ in accent_keywords:
