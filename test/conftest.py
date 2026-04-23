@@ -56,6 +56,24 @@ async def db_session(
 
 
 @pytest_asyncio.fixture(scope="function", loop_scope="session")
+async def db_session_no_rollback(
+    test_engine: AsyncEngine, test_async_session_maker: async_sessionmaker[AsyncSession]
+) -> AsyncGenerator[AsyncSession]:
+    connection = await test_engine.connect()
+    session = test_async_session_maker(bind=connection)
+
+    logger.info("[Setup] New session and transaction created")
+
+    try:
+        yield session
+    finally:
+        await session.close()
+        await connection.close()
+
+    logger.info("[Session] All data saved!")
+
+
+@pytest_asyncio.fixture(scope="function", loop_scope="session")
 async def redis_session() -> AsyncGenerator[redis.Redis]:
     redis_client = redis.Redis(
         host=redis_settings.REDIS_HOST,

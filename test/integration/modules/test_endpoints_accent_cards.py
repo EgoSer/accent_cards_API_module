@@ -42,12 +42,12 @@ async def test_get_cards_endpoint_no_cards(async_client):
 
 
 @pytest.mark.asyncio
-async def test_create_cards(db_session, accent_keywords):
+async def test_create_cards(db_session_no_rollback, accent_keywords):
     # exists purely for next tests
     cards = [Card(word=word, accent=accent) for word, accent in accent_keywords]
 
-    db_session.add_all(cards)
-    await db_session.commit()
+    db_session_no_rollback.add_all(cards)
+    await db_session_no_rollback.commit()
 
     assert cards is not None
 
