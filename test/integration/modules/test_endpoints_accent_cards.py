@@ -24,8 +24,8 @@ def accent_keywords():
 
 
 @pytest.mark.asyncio
-async def test_get_cards_endpoint_no_cards():
-    app.dependency_overrides[get_async_session] = db_session
+async def test_get_cards_endpoint_no_cards(get_db_session_generator):
+    app.dependency_overrides[get_async_session] = get_db_session_generator
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         amount = 10
         print(f"{prefix}/get_cards?amount={amount}")
