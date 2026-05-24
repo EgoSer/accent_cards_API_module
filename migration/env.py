@@ -16,6 +16,7 @@ from alembic import context
 from src.core.sql.database import Base
 from src.core.sql.config import pg_settings
 from src.modules.accent_cards.models import *
+from src.modules.admin_panel.models import *
 
 
 ############################# YOUR MODULES GO HERE #############################
