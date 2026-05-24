@@ -1,4 +1,5 @@
 from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 
 from loguru import logger
 
@@ -7,6 +8,7 @@ import redis.asyncio as redis
 from .config import redis_settings
 
 
+@asynccontextmanager
 async def async_redis_session() -> AsyncGenerator[redis.Redis]:
     redis_client = redis.Redis(
         host=redis_settings.REDIS_HOST,
